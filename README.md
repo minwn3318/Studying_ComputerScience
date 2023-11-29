@@ -1,6 +1,7 @@
-# Studying_ComputerScience   (컴퓨터 사이언스 공부 레퍼지토리)    
+# Studying_ComputerScience 
+프로그래밍을 위해 컴퓨터 사이언스를 공부하는 레퍼지토리입니다.  
+   
 This Repasitory is that Studying computer Science to programing      
-(프로그래밍을 위해 컴퓨터 사이언스를 공부하는 레퍼지토리입니다.)   
 
 -------------
 
