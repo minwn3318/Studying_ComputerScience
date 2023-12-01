@@ -44,8 +44,9 @@
      * 데이터 보낼 때 구조 : 패킷 (헤더+트레일러 = 데이터)   
 
    * 패킷전송 형태 :   
-     <src = "https://github.com/minwn3318/Studying_ComputerScience/assets/123531300/e02b81d3-843f-47d7-af97-5b6836267b58.png" width = "40%" hight = "40%">
-     * 패킷전송 형태 (인터넷)
+     <img src = "https://github.com/minwn3318/Studying_ComputerScience/assets/123531300/e02b81d3-843f-47d7-af97-5b6836267b58.png" width = "80%" hight = "80%">
+     * 패킷전송 형태 (인터넷) :   
+       <img src = "https://github.com/minwn3318/Studying_ComputerScience/assets/123531300/c7290ff8-8d15-462e-bd51-52de3d760d3f.png" width = "80%" hight = "80%">
 
 **3. ip주소, 포트번호**
    * ip 주소 :
