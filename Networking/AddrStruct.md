@@ -38,8 +38,8 @@ struct in_addr {
 		struct {
 			u_short s_w1;
 			u_short s_w2;
-		}S_un_w; // 2개의 워드로 구성
-		u_long S_addr; //32비트 주소를 담는 필드
+		}S_un_w; // 4개의 바이트를 2개의 바이트 묶음로 구성
+		u_long S_addr; //전체32비트 주소를 담는 필드
 	}S_un;
 #define s_addr S_un.S_addr
 };
