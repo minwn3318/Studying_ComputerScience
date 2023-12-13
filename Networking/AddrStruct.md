@@ -1,22 +1,17 @@
 # 소켓 주소 구조체   
-```
-#pragma comment (lib,"ws2_32.lib")
-#include <WinSock2.h>
-#include <WS2tcpip.h>
-#include <iostream>
-using namespace std;
 
-// IPv4 소켓 주소 구조체
-//--------------------
+### IPv4 주소체계 구조체 (윈도우에서 SOCKADDR_IN로 재정의)
+```
 struct sockaddr_in {
 	short sin_family;         // 주소체계
 	unsigned short sin_port;  // 포트넘   
 	struct in_addr sin_addr;  // IP 주소
 	char sin_zero[8];
 };
+```
 
-// IPv6 소켓 주소 구조체
-//--------------------
+### IPv6 주소체계 구조체 (윈도우에서 SOCKADDR_IN6로 재정의)
+```
 struct sockaddr_in6 {
 	short sin6_family;      // 주소체계
 	u_short sin6_port;      // 포트넘
@@ -24,9 +19,10 @@ struct sockaddr_in6 {
 	struct in6_addr;        // IP 주소
 	u_long sin6_scope_id;   
 };
+```
 
-// IP주소 구조체 s_addr(S_un(.S_addr, S_un_w, S_un_b))
-//--------------------
+### IP주소 구조체 (윈도우에서 IN_ADDR로 재정의)
+```
 struct in_addr {
 	union {
 		struct {
