@@ -32,7 +32,7 @@
 ---------------
 
 ### 서버 구성 방법(윈도우)   
-* 서버측
+## 서버측
 1. 윈속 변수 선언 및 초기화
 2. 소켓함수로 소켓 생성
 3. 소켓주소구조체 선언으로 주소체계, 포트번호, 아이피주소 선언
@@ -154,6 +154,118 @@ int main()
 	closesocket(c_sock);
 	closesocket(sock);
 	cout << "end" << endl;
+	WSACleanup();
+	return 0;
+}
+```
+## 클라이언트측
+1. 윈속 변수 선언 및 초기화
+2. 소켓함수로 소켓 생성
+3. 소켓주소구조체 선언으로 주소체계, 포트번호, 아이피주소 선언
+4. 소켓주소구조체를 매개변수로 connect 함수 작성
+5. 버퍼를 만든다
+6. 반복문 안에 리시브함수와 샌드함수를 만든다
+7. 반복문이 끝나면, 통신소켓과 얼굴마담 소켓을 닫는 함수를 호출한다
+8. 윈속을 정리하는 함수를 호출한다.
+
+**예시 코드**   
+```
+#pragma comment (lib, "ws2_32.lib")
+#include <WinSock2.h>
+#include <WS2tcpip.h>
+#include <iostream>
+#include <stdio.h>
+
+#define SERVERPORT 9000
+using namespace std;
+```
+
+```
+int main()
+{
+	WSADATA cwsa;
+	if(WSAStartup(MAKEWORD(2, 2), &cwsa))
+	{
+		error_display("WSAStartup");
+		return -1;
+	}
+```
+
+```
+	SOCKET c_sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if (c_sock == INVALID_SOCKET)
+	{
+		error_display("socket");
+		return -1;
+	}
+```
+
+```
+	SOCKADDR_IN caddr;
+	caddr.sin_family = AF_INET;
+	caddr.sin_port = htons(SERVERPORT);
+	PCWSTR ipaddr = L"127.0.0.1";
+	if (!InetPtonW(AF_INET, ipaddr, &caddr.sin_addr))
+	{
+		error_display("InetPtonW");
+		return -1;
+	}
+```
+
+```
+	if (connect(c_sock, (SOCKADDR*)&caddr, sizeof(caddr)))
+	{
+		error_display("connect");
+		return -1;
+	}
+```
+
+```
+	int retval;
+	int len;
+	char buf[BUFSIZ + 1];
+```
+
+```
+	while (1)
+	{
+		cout << "input : ";
+		fgets(buf, BUFSIZ + 1, stdin);
+		if (*buf == '\n')
+			break;
+
+		len = strlen(buf);
+		
+		//cout << "size len : " << len << endl;
+
+		retval = send(c_sock, buf, len, 0);
+		if (retval == SOCKET_ERROR)
+		{
+			error_display("send");
+			break;
+		}
+```
+
+```
+		//cout << "size send retval : " << retval << endl;
+
+		retval = recv(c_sock, buf, retval, 0);
+		if (retval == SOCKET_ERROR)
+		{
+			error_display("recv");
+			break;
+		}
+
+		//cout << "size recv retval : " << retval << endl;
+
+		buf[retval] = '\0';
+		cout << "sever : " << buf << endl;
+	}
+```
+
+```
+	closesocket(c_sock);
+	cout << "endl" << endl;
 	WSACleanup();
 	return 0;
 }
