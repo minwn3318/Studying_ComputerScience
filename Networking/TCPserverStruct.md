@@ -32,6 +32,7 @@
 ---------------
 
 ### 서버 구성 방법(윈도우)   
+* 서버측
 1. 윈속 변수 선언 및 초기화
 2. 소켓함수로 소켓 생성
 3. 소켓주소구조체 선언으로 주소체계, 포트번호, 아이피주소 선언
@@ -43,3 +44,117 @@
 9. 반복문 안에 리시브함수와 샌드함수를 만든다
 10. 반복문이 끝나면, 통신소켓과 얼굴마담 소켓을 닫는 함수를 호출한다
 11. 윈속을 정리하는 함수를 호출한다.
+
+**예시 코드**
+```
+#pragma comment (lib,"ws2_32.lib")
+#include <WinSock2.h>
+#include <WS2tcpip.h>
+#include <iostream>
+#include <stdio.h>
+
+#define SRVERPORT 9000
+using namespace std;
+```
+   
+```
+int main()
+{
+	WSADATA wsa;
+	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+	{
+		erro_display("Init Error");
+		return -1;
+	}
+```
+
+```
+	SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if (sock == INVALID_SOCKET)
+	{
+		erro_display("socket");
+		return -1;
+	}
+```
+
+```
+	SOCKADDR_IN saddr;
+	saddr.sin_family = AF_INET;
+	saddr.sin_port = htons(SRVERPORT);
+	saddr.sin_addr.s_addr = ntohl(INADDR_ANY);
+	if (bind(sock, (SOCKADDR*)&saddr, sizeof(saddr)))
+	{
+		erro_display("bind");
+		return -1;
+	}
+```
+
+```
+	if (listen(sock, SOMAXCONN))
+	{
+		erro_display("listen");
+		return -1;
+	}
+```
+
+```
+	SOCKADDR_IN caddr;
+	int caddrlen = sizeof(caddr);
+	SOCKET c_sock = accept(sock, (SOCKADDR*)&caddr, &caddrlen);
+	if (c_sock == INVALID_SOCKET)
+	{
+		erro_display("accept");
+		return -1;
+	}
+```
+
+```
+	cout << "client connect " << endl;
+	cout << "port number : " << ntohs(caddr.sin_port) << endl;
+
+	int retval;
+	char buf[BUFSIZ];
+```
+
+```
+	while (1)
+	{
+
+		retval = recv(c_sock, buf, BUFSIZ, 0);
+		if (retval == SOCKET_ERROR)
+		{
+			erro_display("recv");
+			break;
+		}
+		if (retval == 0)
+		{
+			break;
+		}
+```
+
+```
+		buf[retval] = '\0';
+
+		cout << "client : " << buf << endl;
+
+		retval = send(c_sock, buf, retval, 0);
+		if (retval == SOCKET_ERROR)
+		{
+			erro_display("send");
+			break;
+		}
+
+		//cout << "size send retval : " << retval << endl;
+
+		//cout << "size : " << retval << endl;
+	}
+```
+
+```
+	closesocket(c_sock);
+	closesocket(sock);
+	cout << "end" << endl;
+	WSACleanup();
+	return 0;
+}
+```
