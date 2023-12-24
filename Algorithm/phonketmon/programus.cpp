@@ -1,51 +1,32 @@
 #include <stdio.h>
 #include <vector>
+#include <algorithm>
 using namespace std;
-
-vector<int> input = { 3,3,3,4,3,4 };
 
 int solution(vector<int> nums)
 {
-    int len = nums.size();
-    int choose = (nums.size()/2);
-    int count = 0;
-    int differnt = 0;
-    int answer;
+    vector<int>::iterator input_iter = nums.begin();
+    vector<int> storage = {0};
 
-    int iter1_el = 0;
-    int iter2_el = 0;
+    int choose = (nums.size() / 2);
+    int element_Nums = 1;
 
-    vector<int>::iterator input_Iter = nums.begin();
+    storage.at(0) = *input_iter;
+    input_iter++;
 
-    while(count < (nums.size() - 1))
+    for (input_iter; input_iter < nums.end(); input_iter++)
     {
-        iter1_el = *input_Iter;
-        input_Iter++;
-        iter2_el = *input_Iter;
-        printf("%d \n", iter1_el);
-        printf("%d \n", iter2_el);
-        if (iter1_el != iter2_el)
+        auto has_element = count(storage.begin(), storage.end(), *input_iter);
+        if (has_element == 0)
         {
-            differnt++;
+            element_Nums++;
         }
-        count++;
+        storage.push_back(*input_iter);
     }
 
-    if (differnt >= choose)
+    if (element_Nums > choose)
     {
-        answer = choose;
+        element_Nums = choose;
     }
-    else
-    {
-        answer = differnt + 1;
-    }
-    return answer;
-}
-
-int main()
-{
-
-    printf("결과 : %d", solution(input));
-
-    return 0;
+    return element_Nums;
 }
