@@ -4,18 +4,32 @@
 #include <iostream>
 using namespace std;
 
-vector<vector<int>> a = { {1, 2}, {3, 4} };
-vector<vector<int>>::iterator b = a.begin();
-
-vector<vector<int>> solution(vector<vector<int>> arr1, vector<vector<int>> arr2) {
-    vector<vector<int>> answer;
-    return answer;
-}
-
-// 현재 벡터의 2차원 배열을 어떻게 순회해야할 지 모르겠음. 반복자를 활용해 보는데
-// 반복자의 *연산이 vecotr에는 안됨
-// 인덱스로 해봐야 겠음 
-int main()
+vector<vector<int>> solution(vector<vector<int>> arr1, vector<vector<int>> arr2) 
 {
-	return 0;
+    vector<int> arrEle = arr1.front();
+
+    int arr_Size = arr1.size();
+    int arrEle_Size = arrEle.size();
+
+    vector<vector<int>> answerVec;
+    vector<int> answerVec_1stEle;
+    int answerVec_2stEle;
+
+    for (int j = 0; j < arrEle_Size; j++)
+    {
+        answerVec_1stEle.push_back(0);
+    }
+
+    for (int i = 0; i < arr_Size; i++)
+    {
+        for (int j = 0; j < arrEle_Size; j++)
+        {
+            answerVec_2stEle = arr1[i][j] + arr2[i][j];
+            answerVec_1stEle[j] = answerVec_2stEle;
+        }
+
+        answerVec.push_back(answerVec_1stEle);
+    }
+
+    return answerVec;
 }
